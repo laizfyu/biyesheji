@@ -1,0 +1,181 @@
+{
+  "easycom": {
+    "^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+  },
+  "pages": [{
+      "path": "pages/index/index",
+      "style": {
+        "navigationBarTitleText": "物品记录"
+      }
+    },
+    {
+      "path": "pages/query/query",
+      "style": {
+        "navigationBarTitleText": "物品目录",
+        "enablePullDownRefresh": false
+      }
+
+    },
+    {
+      "path": "pages/own/own",
+      "style": {
+        "navigationBarTitleText": "个人中心",
+        "enablePullDownRefresh": false
+      }
+
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "用户登录",
+        "enablePullDownRefresh": false
+      }
+    }
+  ],
+  "subPackages": [{
+    "root": "pagesA",
+    "pages": [{
+      "path": "member/member",
+      "style": {
+        "navigationBarTitleText": "个人资料",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "xinxi/touxiang/touxiang",
+      "style": {
+        "navigationBarTitleText": "个人头像",
+        "enablePullDownRefresh": false,
+        "navigationBarBackgroundColor": "#333",
+        "navigationBarTextStyle": "white"
+      }
+
+    }, {
+      "path": "xinxi/name/name",
+      "style": {
+        "navigationBarTitleText": "修改用户名",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "xinxi/phone/phone",
+      "style": {
+        "navigationBarTitleText": "绑定电话号码",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "xinxi/password/password",
+      "style": {
+        "navigationBarTitleText": "修改/保存密码",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "xinxi/sex/sex",
+      "style": {
+        "navigationBarTitleText": "修改/保存性别",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "family/family",
+      "style": {
+        "navigationBarTitleText": "家庭信息",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "xinxi/makefamily/makefamily",
+      "style": {
+        "navigationBarTitleText": "创建家庭",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "xinxi/newfamily/newfamily",
+      "style": {
+        "navigationBarTitleText": "我的家庭",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "addwupin/addwupin",
+      "style": {
+        "navigationBarTitleText": "新增收纳",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "search/search",
+      "style": {
+        "navigationBarTitleText": "物品搜索",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "box/box",
+      "style": {
+        "navigationBarTitleText": "盒子管理",
+        "enablePullDownRefresh": false
+      }
+
+    }]
+  }, {
+    "root": "pagesB",
+    "pages": [{
+      "path": "addBox/addBox",
+      "style": {
+        "navigationBarTitleText": "盒子增加",
+        "enablePullDownRefresh": false
+      }
+    }, {
+      "path": "box_detail/box_detail",
+      "style": {
+        "navigationBarTitleText": "盒子详情",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "wupin_detail/wupin_detail",
+      "style": {
+        "navigationBarTitleText": "物品详情",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "wupin_change/wupin_change",
+      "style": {
+        "navigationBarTitleText": "物品变更记录",
+        "enablePullDownRefresh": false
+      }
+
+    }]
+  }],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "物品收纳",
+    "navigationBarBackgroundColor": "#fff",
+    "backgroundColor": "#fff"
+  },
+  "tabBar": {
+    "color": "#333333",
+    "selectedColor": "#333",
+    "list": [{
+        "text": "记录",
+        "pagePath": "pages/index/index",
+        "iconPath": "static/iconfont/index.png",
+        "selectedIconPath": "static/iconfont/index_1.png"
+      },
+      {
+        "text": "目录",
+        "pagePath": "pages/query/query",
+        "iconPath": "static/iconfont/query.png",
+        "selectedIconPath": "static/iconfont/query_1.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/own/own",
+        "iconPath": "static/iconfont/own.png",
+        "selectedIconPath": "static/iconfont/own_1.png"
+      }
+    ]
+  }
+}
