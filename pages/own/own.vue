@@ -17,7 +17,7 @@
       <view class="center_jilu" @click="getFamily()">
         <view>
           <image src="../../static/iconfont/family.png" class="center_img"></image>
-          <text>家庭信息</text>
+          <text>家庭管理</text>
         </view>
         <view>
           <image src="../../static/iconfont/arrow-right.png" mode=""></image>

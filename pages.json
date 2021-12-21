@@ -62,37 +62,9 @@
         "enablePullDownRefresh": false
       }
     }, {
-      "path": "xinxi/password/password",
-      "style": {
-        "navigationBarTitleText": "修改/保存密码",
-        "enablePullDownRefresh": false
-      }
-
-    }, {
       "path": "xinxi/sex/sex",
       "style": {
         "navigationBarTitleText": "修改/保存性别",
-        "enablePullDownRefresh": false
-      }
-
-    }, {
-      "path": "family/family",
-      "style": {
-        "navigationBarTitleText": "家庭信息",
-        "enablePullDownRefresh": false
-      }
-
-    }, {
-      "path": "xinxi/makefamily/makefamily",
-      "style": {
-        "navigationBarTitleText": "创建家庭",
-        "enablePullDownRefresh": false
-      }
-
-    }, {
-      "path": "xinxi/newfamily/newfamily",
-      "style": {
-        "navigationBarTitleText": "我的家庭",
         "enablePullDownRefresh": false
       }
 
@@ -107,6 +79,13 @@
       "path": "search/search",
       "style": {
         "navigationBarTitleText": "物品搜索",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "family/family",
+      "style": {
+        "navigationBarTitleText": "家庭管理",
         "enablePullDownRefresh": false
       }
 
@@ -144,6 +123,27 @@
       "path": "wupin_change/wupin_change",
       "style": {
         "navigationBarTitleText": "物品变更记录",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "family_detail/family_detail",
+      "style": {
+        "navigationBarTitleText": "家庭详情",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "addFamily/addFamily",
+      "style": {
+        "navigationBarTitleText": "组建家庭",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "familyImg/familyImg",
+      "style": {
+        "navigationBarTitleText": "更换家庭头像",
         "enablePullDownRefresh": false
       }
 
