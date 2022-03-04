@@ -2,14 +2,14 @@
   <view>
     <view class="own_head">
       <view class="head_lf">
-        <image :src="imgurl" @click="getImg()"></image>
+        <image src="/static/img/moren.jpeg"></image>
         <view class="lf_rt">
-          <open-data type="userNickName"></open-data>
-          <text>108814</text>
+          <text>{{users.userName}}</text>
+          <text>{{users.userPhone}}</text>
         </view>
       </view>
       <view class="head_rt" @click="getmember()">
-        <image src="../../static/iconfont/xiugai@2x.png" mode=""></image>
+        <image src="/static/iconfont/arrow-right.png" mode=""></image>
       </view>
     </view>
     <view class="own_center">
@@ -37,7 +37,7 @@
     <view class="center_jilu" @click="getPhone()">
         <view>
           <image src="../../static/iconfont/phone.png" class="center_img"></image>
-          <text>电话号码</text>
+          <text>{{phone}}</text>
         </view>
         <view>
           <image src="../../static/iconfont/arrow-right.png" mode=""></image>
@@ -58,55 +58,49 @@
       return {
         imgurl: "../../static/img/touxiang.jpg",
         isLogin: true,
-        openId: "",
-        userInfo: ""
+        users: "",
+        phone: "绑定手机号"
       }
     },
     onShow() {
-      console.log(uni.getStorageSync("token"));
-      if (uni.getStorageSync("token")) {
-        this.isLogin = false;
-        this.openId = uni.getStorageSync("openId");
-        this.getUserInfo();
+      this.users = uni.getStorageSync("userInfo");
+      if (this.users){
+        this.isLogin = false
+        this.phone = "手机号已绑定"
       } else {
-        this.isLogin = true;
+        this.phone = "绑定手机号";
       }
     },
     methods: {
       // 跳转到个人信息页
       getmember() {
         uni.navigateTo({
-          url: "../../pagesA/member/member"
+          url: "/pagesA/member/member"
         })
       },
       // 跳转到家庭页面
       getFamily() {
         uni.navigateTo({
-          url: "../../pagesA/family/family"
+          url: "/pagesA/family/family"
         })
       },
       // 跳转到盒子管理页面
       getBox() {
         uni.navigateTo({
-          url: "../../pagesA/box/box"
+          url: "/pagesA/box/box"
         })
       },
       getPhone() {
-        uni.navigateTo({
-          url: "../../pagesA/xinxi/phone/phone"
-        })
+        if (this.users){
+          
+        } else {
+          uni.navigateTo({
+            url: "/pagesA/xinxi/phone/phone"
+          })
+        }
       },
       // 跳转到登录页面
       goLogin() {
-        this.$login
-          // .checkLogin()
-          // .then(() => {
-          //   // 已登录
-          //   console.log("已登录");
-          // })
-          // .catch(() => {
-          //   // 未登录
-          //   console.log("未登录");
             wx.reLaunch({
               url: "/pages/login/login",
             });
@@ -114,7 +108,9 @@
       },
       // 退出登录
       outLogin() {
-        this.$login.exitLogin();
+        uni.navigateTo({
+          url: "outLogin/outLogin"
+        })
       },
     }
   }

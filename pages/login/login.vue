@@ -35,34 +35,37 @@
           lang: "zh_CN",
           desc: "登录",
           success: (res) => {
-            console.log(res),
+            // console.log(res),
+            wx.setStorageSync("userName", res.userInfo.nickName);
               wx.login({
                 success: (open) => {
-                  console.log("code:" + open.code)
+                  console.log(open);
+                  console.log("code:" + open.code);
                   //发起网络请求,获取openid
                   wx.request({
                     url: domain + "/wxlogin",
                     data: {
-                      code: open.code
+                      code: open.code,
                     },
                     method: "POST",
                     success: (r) => {
-                      console.log("用户的openid:" + r.data.data.openid);
+                      console.log("用户的openid:" + r.data.msg);
+                      wx.setStorageSync("userId", r.data.msg);
                       this.$refs.uTips.show({
-                        title: "登录成功",
+                        title: "授权成功",
                         type: "success",
                         duration: "1500",
                       });
                       setTimeout(() => {
                         wx.reLaunch({
-                          url: "../index/index",
+                          url: "/pagesA/xinxi/phone/phone",
                         });
                       }, 1000);
                     },
                     fail: (error) => {
                       console.log(error);
                       this.$refs.uTips.show({
-                        title: "登录失败",
+                        title: "授权失败",
                         type: "error",
                         duration: "1500",
                       });

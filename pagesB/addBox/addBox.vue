@@ -22,7 +22,7 @@
     </u-modal>
 
     <!-- 盒子类型 -->
-    <view class="box_name">
+   <!-- <view class="box_name">
       <text>盒子类型</text>
       <view class="name" @click="getType">
         <text>{{typeName}}</text>
@@ -48,7 +48,7 @@
           :closeable="closeable" />
       </view>
     </u-popup>
-
+ -->
     <!-- 位置信息详细描述 -->
     <view class="info">
       <view class="info_head">
@@ -78,41 +78,35 @@
       盒子标签以及二维码将会自动生成
     </view>
     <!-- 底部保存按钮 -->
-    <button type="default" class="buttom">保存</button>
+    <button type="default" class="buttom" @click="saveBox">保存</button>
   </view>
 </template>
 
 <script>
+  const app = getApp()
+  const domain = app.globalData.domain
   export default {
     data() {
       return {
-        name: "",
+        name: "", //盒子名称
         show: false,
         typeShow: false,
         value: "",
-        input: "",
-        boxImg: "../../static/img/pic_add.png",
+        input: "", //盒子描述
+        boxImg: "/static/img/pic_add.png", //盒子图片
         typeName: "",
         closeable: false,
-        list: [
-          {typeName: "收纳箱"},
-          {typeName: "柜子"},
-          {typeName: "药箱"},
-          {typeName: "工具盒"},
-          {typeName: "梳妆台"},
-          {typeName: "床头柜"},
-          {typeName: "衣柜"},
-          {typeName: "冰箱"},
-          {typeName: "鞋柜"},
-          {typeName: "保险箱"},
-          {typeName: "其他"},
-        ]
+        user_id: "", //用户id
+        user_name: "", //用户姓名
       }
     },
     methods: {
       // 填写盒子名称
       getShow() {
         this.show = true
+        const users = uni.getStorageSync("userInfo");
+        this.user_id = users.userId;
+        this.user_name = users.userName;
       },
       setModal() {
         if (this.value.length == 0) {
@@ -139,10 +133,30 @@
         uni.chooseImage({
           count: 1,
           success: (res) => {
-            this.boxImg = res.tempFilePaths
+            this.boxImg = res.tempFilePaths[0]
+            console.log(this.boxImg);
           },
           fail: () => {
             console.log("出错啦")
+          }
+        })
+      },
+      saveBox() {
+        wx.request({
+          url: domain + "/saveBox",
+          method: "POST",
+          data: {
+            boxName: this.name,
+            boxImg: this.boxImg,
+            userId: this.user_id,
+            userName: this.user_name,
+            boxMiaoshu: this.input
+          },
+          success(res) {
+            console.log(res)
+            uni.navigateBack({
+              
+            })
           }
         })
       }

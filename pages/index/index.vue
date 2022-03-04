@@ -1,5 +1,13 @@
 <template>
   <view>
+    <view class="index_head">
+      <image src="/static/iconfont/laba.png" mode=""></image>
+      <view>合理收纳 , 整洁家庭</view>
+    </view>
+    <!-- 轮播图 -->
+    <view class="swiper">
+      <u-swiper :list="swiperList" :effect3d="true" height="350"></u-swiper>
+    </view>
     <view style="height: 120rpx;">
       <view class="addShouna" @click="getAddwupin">
         <image src="../../static/iconfont/add_shouna.png" mode=""></image>
@@ -8,21 +16,22 @@
     </view>
     <view class="shouna_center">
       
-      <view class="shouna_item" @click="getWupin">
+      <view class="shouna_item" @click="getWupin" v-for="(item,index) in list" :key="item.index">
         <view class="item_head">
           <view class="head_lf">
             <image src="../../static/iconfont/add_item.png" mode=""></image>
-            <text>XF0001</text>
+            <text>{{item.wupinId}}</text>
           </view>
-          <text class="head_rt">饮料</text>
+          <text class="head_rt">{{item.wupinName}}</text>
         </view>
         <view class="item_center">
           <image src="../../static/img/pic_add.png" mode="aspectFit"></image>
-          <view class="center_show"><text>描述:</text>编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。编译成功。前端运行日志，请另行在小程序开发工具的控制台查看编译成功。前端运行日志，请另行在小程序开发工具的控制台查看</view>
+          <!-- {{item.wupinImg}} -->
+          <view class="center_show"><text>描述:</text>{{item.wupinMiaoshu}}</view>
         </view>
         <view class="item_bottom">
-          <view>2021/12/09</view>
-          <view><text>¥ 5</text> <text>x 2</text></view>
+          <view>{{item.wupinTime}}</view>
+          <view><text>¥ {{item.wupinPic}}</text> <text>x {{item.wupinNum}}</text></view>
         </view>
       </view>
       
@@ -36,23 +45,53 @@
   export default {
     data() {
       return {
-
+        list: "",
+        user_id: "",
+        swiperList: [
+          {
+            image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWd1qYUQi7mBPCEjLig615IFWCbz4oSXy62udv*d*xcbZFnY5P.u0rclIlyfliwavis!/b&bo=YgPOAWIDzgEBGT4!&rf=viewer_4"
+          },
+          {
+            image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWcnEc5b5yJXqOTvx3D158IZ7BoQl7fWWEZlMp*A8nH6uk0ewXLoX*ygUZ2miAnbXa8!/b&bo=6AMyAugDMgIBGT4!&rf=viewer_4"
+          },
+          {
+            image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWdDlraGz.al.0tAImKueI149FHCYzxEH.f0RvE2Gs4IsH0.vhLInQ7XlPqR2CrNv6E!/b&bo=PwPWAT8D1gEBGT4!&rf=viewer_4"
+          }
+        ]
       }
     },
-    onLoad() {
-
+    onShow() {
+    this.getList();
     },
     methods: {
+      getList() {
+        const users = uni.getStorageSync("userInfo");
+        console.log("用户信息:")
+        console.log(users);
+        this.user_id = users.id;
+        wx.request({
+          url: domain + "/list",
+          method: "POST" ,
+          data: {
+            userId: this.user_id,
+          },
+          success:(res) => {
+            console.log(res)
+            this.list = res.data.data;
+            console.log(this.list)
+          }
+        })
+      },
       // 跳转到新增物品页
       getAddwupin() {
         uni.navigateTo({
-          url: "../../pagesA/addwupin/addwupin"
+          url: "/pagesA/addwupin/addwupin"
         })
       },
       // 跳转到物品详情页
       getWupin() {
         uni.navigateTo({
-          url: "../../pagesB/wupin_detail/wupin_detail"
+          url: "/pagesB/wupin_detail/wupin_detail"
         })
       }
     }
@@ -60,6 +99,25 @@
 </script>
 
 <style lang="scss">
+  .index_head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    image {
+      width: 50rpx;
+      height: 50rpx;
+      margin-left: 23rpx;
+    }
+    view {
+      margin-left: 10rpx;
+      font-size: 28rpx;
+      font-family: PingFang SC;
+      color: #282828;
+    }
+  }
+  .swiper {
+    margin-top: 10rpx;
+  }
   .addShouna {
     width: 682rpx;
     height: 84rpx;
@@ -68,11 +126,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: fixed;
-    top: 33rpx;
-    left: 50%;
-    margin-left: -341rpx;
-
+    // position: fixed;
+    // top: 450rpx;
+    // left: 50%;
+    // margin-left: -341rpx;
+    margin: 50rpx auto;
     image {
       width: 34rpx;
       height: 34rpx;

@@ -3,17 +3,17 @@
     
     <view class="family_item">
       <text>家庭标签:</text>
-      <text style="color: #FF9900;">FY0001</text>
+      <text style="color: #FF9900;">{{familyId}}</text>
     </view>
     <!-- 修改家庭名称 -->
     <view class="family_item">
       <text>家庭名称:</text>
-      <view class="rt" @click="getNameShow">
+      <view class="rt">
         <text>{{familyName}}</text> 
-        <image src="../../static/iconfont/arrow-right.png" mode=""></image>
+        <!-- <image src="../../static/iconfont/arrow-right.png" mode=""></image> -->
       </view>
     </view>
-    <u-modal
+   <!-- <u-modal
       show-cancel-button 
       v-model="nameShow" 
       title="请输入家庭名称" 
@@ -24,9 +24,9 @@
           <u-input v-model="value" type=text focus maxlength=10 />
         </view>
       </view>
-    </u-modal>
+    </u-modal> -->
     <!-- 修改家庭头像 -->
-    <view class="family_item">
+    <!-- <view class="family_item">
       <text>家庭头像:</text>
       <view class="rt" @click="getFamilyImg">
         <image src="../../static/iconfont/arrow-right.png" mode=""></image>
@@ -34,51 +34,35 @@
     </view>
     <view class="familyImg">
       <image src="../../static/img/jiaju.webp" mode="aspectFit"></image>
-    </view>
+    </view> -->
     <!-- 家庭成员模块 -->
     <view class="family_member">
       <u-collapse>
       		<u-collapse-item title="家庭成员:">
-            <view class="member">
-              <text>小明</text>
-              <text>108806</text>
+            <view class="member" v-for="(item,index) in familyUser" :key="item.index">
+              <text>{{item.userName}}</text>
+              <text>{{item.userPhone}}</text>
             </view>
-            <view class="member">
-              <text>小红</text>
-              <text>101865</text>
-            </view>
-            <view class="member">
-              <text>小华</text>
-              <text>108080</text>
-            </view>
-            <view class="member">
-              <text>小张</text>
-              <text>145061</text>
-            </view>
-            <view class="member">
-              <text>小小</text>
-              <text>108806</text>
-            </view>
-            <view class="member">
-              <text>小于</text>
-              <text>108806</text>
-            </view>
-            <view class="member">
-              <text>小巫</text>
-              <text>108806</text>
-            </view>
-            <view class="member">
-              <text>小哈</text>
-              <text>108806</text>
-            </view>
-            <view class="addBtn">
+            <view class="addBtn" @click="getShow()">
               <image src="../../static/iconfont/add_shouna.png" mode=""></image>
               <text>添加成员</text>
             </view>
       		</u-collapse-item>
           <!-- 底部保存按钮 -->
-          <button type="default" class="buttom">确认修改</button>
+          <!-- <button type="default" class="buttom">确认修改</button> -->
       	</u-collapse>
+        <u-modal
+          show-cancel-button 
+          v-model="show" 
+          title="请输入成员电话号码" 
+          @confirm="setModal" 
+          confirm-color="#dea36c">
+          <view class="slot-content">
+            <view class="ipt">
+              <u-input v-model="phone" type=text focus maxlength=11 />
+            </view>
+          </view>
+        </u-modal>
     </view>
     <!-- 底部保存按钮 -->
     <!-- <button type="default" class="buttom">确认修改</button> -->
@@ -88,34 +72,69 @@
 </template>
 
 <script>
+  const app = getApp()
+  const domain = app.globalData.domain
   export default {
     data() {
       return {
         nameShow: false,
-        familyName: "小明的一家"
+        familyName: "小明的一家",
+        familyDetail: "",
+        familyId: "",
+        show: false,
+        phone: "",
+        familyUser: ""
       }
     },
+    onLoad(options) {
+      this.familyDetail = JSON.parse(decodeURIComponent(options.detail));
+      this.familyName = this.familyDetail.familyName;
+      this.familyId = this.familyDetail.familyId;
+    },
+    onShow() {
+      this.getFamilyUser()
+    },
     methods: {
-      // 跳转到头像修改页面
-      getFamilyImg() {
-        uni.navigateTo({
-          url: "../familyImg/familyImg"
+      getFamilyUser() {
+        wx.request({
+          url: domain + "/getUsersByFamilyId?familyId=" + this.familyId,
+          method: "GET",
+          success:(rrr) => {
+            console.log(rrr)
+            this.familyUser = rrr.data.data
+          }
         })
       },
-      // 弹出家庭名称修改框
-      getNameShow() {
-        this.nameShow = true
+      // // 跳转到头像修改页面
+      // getFamilyImg() {
+      //   uni.navigateTo({
+      //     url: "../familyImg/familyImg"
+      //   })
+      // },
+      // 弹出添加成员框
+      getShow() {
+        this.show = true
       },
       setModal() {
-        if (this.value.length === 0) {
-          console.log("不能为空",this.name)
-          this.$refs.uToast.show({
-            title: '家庭名称不能为空',
-            type: 'warning',
-          })
-        } else {
-          this.familyName = this.value
-        }
+        wx.request({
+          url: domain + "/addFamilyUser",
+          data: {
+            userPhone: this.phone,
+            familyId: this.familyId,
+            familyName: this.familyName
+          },
+          method: "POST",
+          success:(res) => {
+            console.log(res)
+            this.$refs.uToast.show({
+              title: res.data.msg,
+              type: 'warning',
+            })
+            setTimeout(() => {
+              this.getFamilyUser()
+            }, 1000); 
+          }
+        })
       }
     }
   }

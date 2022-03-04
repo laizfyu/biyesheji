@@ -1,47 +1,111 @@
 <template>
   <view>
-    <view class="familyItem">
+    <view class="familyItem" v-for="(item,index) in familyList" :key="item.index">
       <view class="news_head">
         <view class="head_lf">
           <image src="../../static/iconfont/family_item.png" mode=""></image> 
-          <view class="bkg"><text>FY0001</text></view>
+          <view class="bkg"><text>{{item.familyId}}</text></view>
         </view>
-        <image src="../../static/iconfont/arrow-right.png" mode="" @click="getFamily"></image>
+        <view class="head_rt" @click="getFamily(index)">
+          <view>{{item.familyName}}</view>
+          <image src="../../static/iconfont/arrow-right.png" mode=""></image>
+        </view>
+        
       </view>
-      <view class="news_center">
+      <!-- <view class="news_center">
         <image src="../../static/img/pic_add.png" mode="aspectFit"></image>
         <view class="familyNews">
           <image src="../../static/iconfont/item.png" mode=""></image>
-          <view>成员: {{number}}</view>
-        </view>
-      </view>
-      <view class="news_bottom">
-        <view>2021/12/21</view>
-        <view>小明的一家人</view>
-      </view>
+          <!-- <view>成员: {{number}}</view> -->
+        <!-- </view>
+      </view> --> 
+      <!-- <view class="news_bottom">
+        <view></view>
+        
+      </view> -->
     </view>
     <button type="default" class="buttom" @click="addFamily">组建家庭</button>
+    <u-modal
+      show-cancel-button 
+      v-model="show" 
+      title="请输入家庭名称" 
+      @confirm="setModal" 
+      confirm-color="#dea36c">
+      <view class="slot-content">
+        <view class="ipt">
+          <u-input v-model="value" type=text focus maxlength=10 />
+        </view>
+      </view>
+    </u-modal>
   </view>
 </template>
 
 <script>
+  const app = getApp()
+  const domain = app.globalData.domain
   export default {
     data() {
       return {
-        number: 5
+        number: 8,
+        userId: "",
+        familyList: "",
+        show: false,
+        value: ""
       }
     },
+    onShow() {
+      const users = uni.getStorageSync("userInfo");
+      this.userId = users.id;
+      console.log(this.userId)
+      this.getList() 
+    },
     methods: {
-      getFamily() {
-        uni.navigateTo({
-          url: "../../pagesB/family_detail/family_detail"
+      getList() {
+        wx.request({
+          url: domain + "/familyList?userId=" + this.userId,
+          method: "GET",
+          // data: {
+          //   userId: this.userId
+          // },
+          success:(res) => {
+            // console.log(res)
+            this.familyList = res.data.data;
+            console.log(this.familyList);
+          }
         })
       },
-      addFamily() {
+      getFamily(index) {
+        let detail = this.familyList[index];
         uni.navigateTo({
-          url: "../../pagesB/addFamily/addFamily"
+          url: "../../pagesB/family_detail/family_detail?detail=" + encodeURIComponent(JSON.stringify(detail)),
         })
-      }
+      },
+      
+      // 新建家庭
+      addFamily() {
+        this.show = true;
+        console.log(this.show)
+      },
+      setModal() {
+        if (this.value.length == 0) {
+          console.log("不能为空")
+          this.$refs.uToast.show({
+            title: '家庭名称不能为空',
+            type: 'warning',
+          })
+        } else {
+          wx.request({
+            url: domain + "/addFamily",
+            method: "POST",
+            data: {
+              familyName: this.value
+            },
+            success(addfm) {
+              console.log(addfm);
+            }
+          })
+        }
+      },
     }
   }
 </script>
@@ -49,7 +113,7 @@
 <style lang="scss">
   .familyItem {
     width: 688rpx;
-    min-height: 300rpx;
+    min-height: 50rpx;
     background: #ffffff;
     box-shadow: 0rpx 1rpx 11rpx 2rpx rgba(98, 98, 98, 0.05);
     border-radius: 8rpx;
@@ -78,6 +142,13 @@
             margin-left: 10rpx;
           }
         }
+      }
+      .head_rt {
+        display: flex;
+        flex-direction: row;
+        font-size: 28rpx;
+        align-items: center;
+        color: #d19a66;
       }
       image {
         width: 50rpx;
@@ -123,5 +194,8 @@
     left: 50%;
     margin-left: -320rpx;
     background-color: #e19d3e !important;
+  }
+  .ipt {
+    margin-left: 15rpx;
   }
 </style>

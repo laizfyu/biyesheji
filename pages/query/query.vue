@@ -56,7 +56,13 @@
         uni.scanCode({
           success: function(res) {
             console.log('条码类型：' + res.scanType);
-            console.log('条码内容：' + res.result);
+            // console.log('条码内容：' + res.result);
+            let result = res.result
+            console.log("1"+result)
+            // 跳转到二维码详情页
+            uni.navigateTo({
+              url: "../../pagesB/QRcode/QRcode?txt=" + encodeURIComponent(JSON.stringify(result))
+            })
           }
         });
       },

@@ -8,14 +8,14 @@
       </view>
       <view class="name_bottom">
         <view>盒子标签</view>
-        <view style="color: #d49a67;">Bx0001</view>
+        <view style="color: #d49a67;">{{detail.boxId}}</view>
         <!-- <image src="../../static/iconfont/arrow-right.png" mode=""></image> -->
       </view>
-      <view class="name_bottom">
+      <!-- <view class="name_bottom">
         <view>盒子类型</view>
         <view style="color: #d49a67;" @click="getType()">{{typeName}}</view>
         <!-- <image src="../../static/iconfont/arrow-right.png" mode=""></image> -->
-      </view>
+      <!-- </view> -->
     </view>
     <u-modal 
       show-cancel-button 
@@ -65,7 +65,7 @@
     <!-- 提示 -->
     <u-toast ref="uToast" />
     <!-- 盒子类型选择 -->
-    <u-popup
+    <!-- <u-popup
       v-model="typeShow" 
       mode="bottom" 
       border-radius="14" 
@@ -83,37 +83,36 @@
           @click="setType(item.typeName)"
           :closeable="closeable" />
       </view>
-    </u-popup>
+    </u-popup> -->
   </view>
 </template>
 
 <script>
+  const app = getApp()
+  const domain = app.globalData.domain
   export default {
     data() {
       return {
-        name: "小华的鞋柜",
-        show: false,
-        typeShow: false,
-        value: "",
-        input: "",
-        boxImg: "../../static/img/pic_add.png",
-        erWei: "../../static/img/pic_add.png",
-        typeName: "工具盒",
+        name: "", //盒子名字
+        show: false, //名字更改显示
+        // typeShow: false,
+        value: "", //更改的盒子名字
+        input: "", //盒子描述
+        boxImg: "http://tmp/QB5i6HNddimMd87e0c0e97e16b9639e2701a8b36439c.jpg", //盒子照片
+        erWei: "", //盒子二维码
         closeable: false,
-        list: [
-          {typeName: "收纳箱"},
-          {typeName: "柜子"},
-          {typeName: "药箱"},
-          {typeName: "工具盒"},
-          {typeName: "梳妆台"},
-          {typeName: "床头柜"},
-          {typeName: "衣柜"},
-          {typeName: "冰箱"},
-          {typeName: "鞋柜"},
-          {typeName: "保险箱"},
-          {typeName: "其他"},
-        ]
+        detail: ""
       }
+    },
+    onLoad(options) {
+      this.detail = JSON.parse(decodeURIComponent(options.detail));
+      console.log(this.detail);
+      this.name = this.detail.boxName;
+      this.input = this.detail.boxMiaoshu;
+      if(this.detail.boxImg) {
+        this.boxImg = this.detail.boxImg;
+      }
+      this.erWei = this.detail.boxErwei;
     },
     methods: {
       // 填写盒子名称
@@ -131,21 +130,20 @@
           this.name = this.value
         }
       },
-      // 填写盒子类型
-      getType() {
-        this.typeShow = true
-      },
-      setType(res) {
-        console.log(res)
-        this.typeName = res
-        this.typeShow = false
-      },
       // 选择盒子照片
       getImg() {
         uni.chooseImage({
           count: 1,
           success: (res) => {
-            this.boxImg = res.tempFilePaths
+            this.boxImg = res.tempFilePaths;
+            console.log(this.boxImg);
+            // wx.request({
+            //   url: domain + "/avatar",
+            //   method: "POST",
+            //   data: {
+                
+            //   }
+            // })
           },
           fail: ()=> {
             console.log("出错啦")

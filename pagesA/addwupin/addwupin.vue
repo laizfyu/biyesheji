@@ -23,13 +23,24 @@
           <view class="rt">数量x<input type="text" :value="number" style="margin-left: 8rpx;" /></view>
         </view>
       </view>
-      <view style="background-color: #969696;height: 2rpx; width: 668rpx; margin-left: 20rpx;margin-top: 20rpx;"></view>
+      <view style="
+        background-color: #969696;
+        height: 2rpx; 
+        width: 668rpx; 
+        margin-left: 20rpx;
+        margin-top: 20rpx;
+      "></view>
       <view class="wupin_tips">
           <view class="tips_top">
             <view>便签</view>
             <image src="../../static/iconfont/arrow-right.png" mode="" @click="getTips"></image>
           </view>
-          <view style="background-color: #d19a66; height: 2rpx; width: 344rpx; margin-left: 344rpx;"></view>
+          <view style="
+            background-color: #d19a66; 
+            height: 2rpx; 
+            width: 344rpx; 
+            margin-left: 344rpx;
+          "></view>
           <view class="tips_bottom">
             <view></view>
             <view class="tipsBtm_rt">
@@ -68,12 +79,22 @@
         <image src="../../static/iconfont/arrow-right.png" mode=""></image>
       </view>
     </view>
-    <u-popup v-model="wupinBox" mode="bottom" border-radius="14" height="60%" safe-area-inset-bottom="true"
+    <u-popup 
+      v-model="wupinBox" 
+      mode="bottom" 
+      border-radius="14" 
+      height="60%" 
+      safe-area-inset-bottom="true"
       closeable="true">
       <text style=" position: fixed; top: 28rpx; left: 50%; margin-left: -101rpx;">选择物品存放的盒子</text>
       <view style="width: 100%; height: 83rpx; background-color: #FFFFFF;"></view>
       <scroll-view scroll-y="true" style="height: 450rpx;">
-        <u-radio-group v-model="radio" active-color="#d19a66" wrap="true" width="100%" @change="setRadio">
+        <u-radio-group 
+          v-model="radio" 
+          active-color="#d19a66" 
+          wrap="true" 
+          width="100%" 
+          @change="setRadio">
           <u-radio name="0">
             <view class="box_item">
               <view class="item_head">
@@ -123,6 +144,68 @@
       btn-type=warning 
       active-bg-color=#e17f4b>
     </u-calendar>
+    
+    <!-- 选择家庭 -->
+    <view class="wupin_box" @click="starFamily">
+      <text>选择所在家庭</text>
+      <view style="display: flex; align-items: center;">
+        <text>{{wupinFamily}}</text>
+        <image src="../../static/iconfont/arrow-right.png" mode=""></image>
+      </view>
+    </view>
+    <u-popup 
+      v-model="familyShow" 
+      mode="bottom" 
+      border-radius="14" 
+      height="60%" 
+      safe-area-inset-bottom="true"
+      closeable="true">
+      <text style=" 
+        position: fixed; 
+        top: 28rpx; 
+        left: 50%; 
+        margin-left: -101rpx;
+      ">选择家庭</text>
+      <view style="width: 100%; height: 83rpx; background-color: #FFFFFF;"></view>
+      <scroll-view scroll-y="true" style="height: 450rpx;">
+        <u-radio-group 
+        v-model="radio" 
+        active-color="#d19a66" 
+        wrap="true" 
+        width="100%" 
+        @change="setFyname">
+          <u-radio name="0">
+            <view class="box_item">
+              <view class="item_head">
+                <text>FY0001</text>
+                <image src="../../static/iconfont/xiugai@2x.png" mode=""></image>
+              </view>
+              <view class="item_center">
+                <text></text>
+                <text>家庭名称</text>
+              </view>
+            </view>
+          </u-radio>
+          <u-radio name="1">
+            <view class="box_item">
+              <view class="item_head">
+                <text>FY0002</text>
+                <image src="../../static/iconfont/xiugai@2x.png" mode="" @click="getBoxdetail"></image>
+              </view>
+              <view class="item_center">
+                <text></text>
+                <text>家庭名称</text>
+              </view>
+            </view>
+          </u-radio>
+        </u-radio-group>
+      </scroll-view>
+      <view class="addBox">
+        <image src="../../static/iconfont/add_shouna.png" mode=""></image>
+        <text>新增收纳盒子</text>
+      </view>
+    </u-popup>
+    
     <!-- 底部保存按钮 -->
     <button type="default" class="buttom">保存</button>
   </view>
@@ -132,19 +215,20 @@
   export default {
     data() {
       return {
-        keyword: "",
-        remark: "",
-        pic: "",
-        number: "",
+        remark: "", //描述信息
+        pic: "", //价格
+        number: "", //数量
         src: "../../static/img/pic_add.png",
-        wupinTips: "",
-        timeBox: false,
-        wupinBox: false,
+        wupinTips: "", //盒子标签
+        wupinFamily: "", //家庭标签
+        timeBox: false, //是否显示过期时间选择
+        wupinBox: false, //是否显示盒子选择
         mode: 'date',
-        time: "",
+        time: "", //过期时间
         radio: "",
-        tipsName: "选择类型",
-        tipsShow: false,
+        tipsName: "选择类型", //盒子类型
+        tipsShow: false, //是否显示标签选择
+        familyShow: false, //是否显示家庭选择
         tipsList: [
           {tipsName: "衣服"},
           {tipsName: "裤子"},
@@ -206,6 +290,14 @@
         console.log(tips)
         this.tipsName = tips
         this.tipsShow = false
+      },
+      // 选择家庭
+      starFamily() {
+        this.familyShow = true
+      },
+      setFyname() {
+        this.familyShow = false
+        this.wupinFamily = 'FY0001'
       },
       // 跳转到盒子详情页
       getBoxdetail() {

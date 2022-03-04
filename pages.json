@@ -31,7 +31,16 @@
         "enablePullDownRefresh": false
       }
     }
-  ],
+      ,{
+            "path" : "pages/own/outLogin/outLogin",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
   "subPackages": [{
     "root": "pagesA",
     "pages": [{
@@ -144,6 +153,13 @@
       "path": "familyImg/familyImg",
       "style": {
         "navigationBarTitleText": "更换家庭头像",
+        "enablePullDownRefresh": false
+      }
+
+    }, {
+      "path": "QRcode/QRcode",
+      "style": {
+        "navigationBarTitleText": "扫码详情",
         "enablePullDownRefresh": false
       }
 

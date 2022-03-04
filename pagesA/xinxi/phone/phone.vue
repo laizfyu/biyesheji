@@ -14,6 +14,7 @@
 </template>
 
 <script>
+  
   const app = getApp()
   const domain = app.globalData.domain
   export default {
@@ -54,11 +55,17 @@
         }
       },
       getSave() {
+        const userName = uni.getStorageSync("userName");
+        const userId = uni.getStorageSync("userId");
+        console.log("用户名:" + userName);
+        console.log("openid:" + userId);
         wx.request({
           url: domain + "/getSMS",
           data: {
             phone: this.mobile,
-            xingxi: this.code
+            xingxi: this.code,
+            userId: userId,
+            userName: userName
           },
           method: "POST",
           success: (res) => {
@@ -69,6 +76,11 @@
               position: 'top',
               back: 'true'
             });
+            setTimeout(() => {
+              wx.reLaunch({
+                url: "/pages/index/index",
+              });
+            }, 1000);
           }
         })
       }

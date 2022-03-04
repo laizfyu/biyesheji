@@ -11,7 +11,7 @@
         maxlength="10"/>
     </view> 
     <view class="add_member">
-      
+      <image src="/static/iconfont/addFamilyUser.png" mode=""></image>
     </view>
   </view>
 </template>
@@ -43,5 +43,8 @@
       font-size: 30rpx;
       font-weight: 500;
     }
+  }
+  .add_member {
+    
   }
 </style>

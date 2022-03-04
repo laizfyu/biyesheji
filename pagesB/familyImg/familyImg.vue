@@ -6,13 +6,16 @@
 </template>
 
 <script>
+  
   export default {
     data() {
       return {
         img: "../../static/img/pic_add.png"
       }
     },
+    
     methods: {
+      
       // 更改头像
       changImg() {
         uni.chooseImage({

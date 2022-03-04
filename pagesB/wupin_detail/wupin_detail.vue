@@ -34,7 +34,7 @@
     <!-- 物品二维码 -->
     <view class="wupin_QRcode">
       <view style="margin-left: 20rpx;">物品二维码:</view>
-      <view class="QRcode"><image :src="wupinQRcode" mode=""></image></view>
+      <view class="QRcode" @click="getWupinimg"><image :src="wupinQRcode" mode=""></image></view>
     </view>
     <!-- 物品所存盒子 -->
     <view style="margin: 20rpx;">物品所存盒子:</view>
@@ -44,7 +44,7 @@
         <image src="../../static/iconfont/arrow-right.png" mode="" @click="getBoxdetail"></image>
       </view>
       <view class="wupinBox_center">
-        <image :src="boxImg" mode="aspectFit"></image>
+        <image :src="boxImg" mode="aspectFit" @click="getWupinimg"></image>
         <u-input 
           style="width: 500rpx;"
           v-model="BXdetail" 
@@ -64,6 +64,24 @@
         </view>
       </view>
     </view>
+    <!-- 物品所在家庭 -->
+    <view style="margin: 20rpx;">物品所在家庭:</view>
+    <view class="wupinFamily">
+      <view class="wupinFamily_hd">
+        <view class="bkg"><text>Bx0001</text></view>
+        <image src="../../static/iconfont/arrow-right.png" mode=""></image>
+      </view>
+      <view class="wupinFamily_ct">
+        <image src="../../static/img/pic_add.png" mode="aspectFit"></image>
+        <view class="wpFyct_rt">
+          <view class="family_member">
+            <image src="../../static/iconfont/item.png" mode=""></image>
+            <text>成员: 5</text>
+          </view>
+          <view>小明的一家人</view>
+        </view>
+      </view>
+    </view>
     <!-- 底部按钮 -->
     <button type="default" class="buttom" @click="getWupinChange">物品记录变更</button>
   </view>
@@ -78,13 +96,9 @@
         wupintips: "鞋子", //物品类型标签
         boxtips: "鞋柜", //盒子类型标签
         wupinImg: "../../static/img/touxiang.jpg", //物品图片
-        wupinQRcode: "../../static/img/pic_add.png", //物品二维码
+        wupinQRcode: "../../static/img/erwei_test.jpg", //物品二维码
         boxImg: "../../static/img/jiaju.webp", //盒子图片
-        listImg: [
-          "../../static/img/touxiang.jpg",
-          "../../static/img/pic_add.png",
-          "../../static/img/jiaju.webp"
-          ]
+        
       }
     },
     methods: {
@@ -95,17 +109,26 @@
         })
       },
       getWupinimg() {
+        let listImg = [this.wupinImg,this.wupinQRcode,this.boxImg];
+        console.log("listImg:"+listImg);
         uni.previewImage({
-          urls: this.listImg,
-          longPressActions: {
-            itemList: ['保存图片', '更改图片','取消'],
-            success:(data) => {
-              console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
-              console.log(this.listImg)
-            },
-            fail(res) {
-              console.log(res)
-            }
+          current: 0,
+          urls: listImg,
+          // longPressActions: {
+          //   itemList: ['保存图片', '更改图片','取消'],
+          //   success:(data) => {
+          //     console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+          //     console.log(this.listImg)
+          //   },
+          //   fail(res) {
+          //     console.log(res)
+          //   }
+          // }
+          success: (res) => {
+            console.log(res)
+          },
+          fail: (err) => {
+            console.log(err)
           }
         })
       },
@@ -208,6 +231,47 @@
      align-items: center;
      margin-top: 20rpx;
    }
+  }
+  .wupinFamily {
+    width: 688rpx;
+    min-height: 200rpx;
+    background: #ffffff;
+    box-shadow: 0rpx 1rpx 11rpx 2rpx rgba(98, 98, 98, 0.05);
+    margin: 20rpx auto;
+    padding: 20rpx;
+    .wupinFamily_hd {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      image {
+        width: 36rpx;
+        height: 36rpx;
+      }
+    }
+    .wupinFamily_ct {
+      display: flex;
+      flex-direction: row;
+      margin-top: 10rpx;
+      image {
+        width: 200rpx;
+        height: 200rpx;
+      }
+      .wpFyct_rt {
+        margin-left: 20rpx;
+        color: #d19a66;
+        image {
+          width: 50rpx;
+          height: 50rpx;
+          margin-right: 10rpx;
+        }
+        .family_member {
+          display: flex;
+          align-items: center;
+          margin-bottom: 50rpx;
+          margin-top: 20rpx;
+        }
+      }
+    }
   }
   .buttom {
     width: 640rpx;

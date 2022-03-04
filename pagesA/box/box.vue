@@ -1,42 +1,24 @@
 <template>
   <view>
-    <view class="box_item" @click="getDetail">
+    <view class="box_item" v-for="(item,index) in boxList" :key="item.index" @click="getDetail(index)">
       <view class="box_head">
         <view class="head_lf">
-          <text>BX0001</text>
+          <text>{{item.boxId}}</text>
         </view>
-        <view>小明的衣柜</view>
+        <view>{{item.boxName}}</view>
       </view>
       <view class="box_center">
-        <view class="center_lf"><image src="https://img2.baidu.com/it/u=516689696,4124403062&fm=26&fmt=auto" mode="aspectFit"></image></view>
+        <view class="center_lf">
+          <image :src="item.boxImg" mode="aspectFit"></image>
+        </view>
         <view class="center_rt">
           <text>盒子位置:</text>
-          项目 'receive' 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。
-          项目 'receive' 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。
-          项目 'receive' 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。
+          {{item.boxMiaoshu}}
         </view>
       </view>
     </view>
     
-    <view class="box_item" @click="getDetail">
-      <view class="box_head">
-        <view class="head_lf">
-          <text>BX0002</text>
-        </view>
-        <view>小红的首饰箱</view>
-      </view>
-      <view class="box_center">
-        <view class="center_lf"><image src="https://img2.baidu.com/it/u=3124012198,305301245&fm=26&fmt=auto" mode="aspectFit"></image></view>
-        <view class="center_rt">
-          <text>盒子位置:</text>
-          项目 'receive' 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。
-          项目 'receive' 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。
-          项目 'receive' 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。
-        </view>
-      </view>
-    </view>
-    
-    <view class="box_item" @click="getDetail">
+    <!-- <view class="box_item" @click="getDetail">
       <view class="box_head">
         <view class="head_lf">
           <text>BX0003</text>
@@ -52,7 +34,7 @@
           项目 'receive' 编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。
         </view>
       </view>
-    </view>
+    </view> -->
     <!-- 底部新增按钮 -->
     <view class="addBox" @click="getAddbox()">
       <image src="../../static/iconfont/add_shouna.png" mode=""></image>
@@ -62,21 +44,47 @@
 </template>
 
 <script>
+  const app = getApp()
+  const domain = app.globalData.domain
   export default {
     data() {
       return {
-
+        user_id: "", //用户openid
+        boxList: "",
+        Img: ""
       }
     },
+    onShow() {
+      this.getBoxList()
+    },
     methods: {
+      getBoxList() {
+        const users = uni.getStorageSync("userInfo");
+        console.log("用户信息:")
+        console.log(users);
+        this.user_id = users.userId;
+        wx.request({
+          url: domain + "/boxList",
+          method: "POST" ,
+          data: {
+            userId: this.user_id,
+          },
+          success:(res) => {
+            // console.log(res)
+            this.boxList = res.data.data;
+            console.log(this.boxList)
+          }
+        })
+      },
       getAddbox() {
         uni.navigateTo({
           url: "../../pagesB/addBox/addBox"
         })
       },
-      getDetail() {
+      getDetail(index) {
+        let detail = this.boxList[index];
         uni.navigateTo({
-          url: "../../pagesB/box_detail/box_detail"
+          url: "/pagesB/box_detail/box_detail?detail=" + encodeURIComponent(JSON.stringify(detail)),
         })
       }
     }
