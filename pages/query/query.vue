@@ -12,23 +12,22 @@
 
     <view class="search_center">
 
-      <view class="shouna_item" @click="getWupinDetail">
+      <view class="shouna_item" v-for="(item,index) in list" :key="item.index" @click="getWupin(index)">
         <view class="item_head">
           <view class="head_lf">
             <image src="../../static/iconfont/add_item.png" mode=""></image>
-            <text>XF0001</text>
+            <text>{{item.wupinId}}</text>
           </view>
-          <text class="head_rt">饮料</text>
+          <text class="head_rt">{{item.wupinName}}</text>
         </view>
         <view class="item_center">
           <image src="../../static/img/pic_add.png" mode="aspectFit"></image>
-          <view class="center_show">
-            <text>描述:</text>编译成功。前端运行日志，请另行在小程序开发工具的控制台查看。编译成功。前端运行日志，请另行在小程序开发工具的控制台查看编译成功。前端运行日志，请另行在小程序开发工具的控制台查看
-          </view>
+          <!-- {{item.wupinImg}} -->
+          <view class="center_show"><text>描述:</text>{{item.wupinMiaoshu}}</view>
         </view>
         <view class="item_bottom">
-          <view>2021/12/09</view>
-          <view><text>¥ {{pic}}</text> <text>x {{number}}</text></view>
+          <view>{{item.wupinTime}}</view>
+          <view><text>¥ {{item.wupinPic}}</text> <text>x {{item.wupinNum}}</text></view>
         </view>
       </view>
 
@@ -37,14 +36,39 @@
 </template>
 
 <script>
+  const app = getApp()
+  const domain = app.globalData.domain
   export default {
     data() {
       return {
-        pic: 5,
-        number: 2
+        list: "", //请求到的数据数组
+        user_id: "", //用户id
       }
     },
+    onShow() {
+      this.getList();
+    },
     methods: {
+      // 请求数据
+      getList() {
+        const users = uni.getStorageSync("userInfo");
+        // console.log("用户信息:")
+        // console.log(users);
+        this.user_id = users.id;
+        console.log(this.user_id + "参数")
+        wx.request({
+          url: domain + "/list",
+          method: "POST",
+          data: {
+            userId: this.user_id,
+          },
+          success: (res) => {
+            console.log(res)
+            this.list = res.data.data;
+            console.log(this.list)
+          }
+        })
+      },
       // 跳转到搜索页面
       getSearch() {
         uni.navigateTo({
@@ -58,7 +82,7 @@
             console.log('条码类型：' + res.scanType);
             // console.log('条码内容：' + res.result);
             let result = res.result
-            console.log("1"+result)
+            console.log("1" + result)
             // 跳转到二维码详情页
             uni.navigateTo({
               url: "../../pagesB/QRcode/QRcode?txt=" + encodeURIComponent(JSON.stringify(result))
@@ -67,9 +91,10 @@
         });
       },
       // 跳转到物品详情页
-      getWupinDetail() {
+      getWupin(index) {
+        let boxId = this.list[index].id;
         uni.navigateTo({
-          url: "../../pagesB/wupin_detail/wupin_detail"
+          url: "/pagesB/wupin_detail/wupin_detail?boxId=" + boxId
         })
       }
     }
@@ -77,6 +102,9 @@
 </script>
 
 <style lang="scss">
+  page {
+    background-color: #f5f5f5;
+  }
   .search {
     width: 688rpx;
     height: 80rpx;
@@ -104,7 +132,8 @@
       text {
         margin-left: 10rpx;
       }
-  } 
+    }
+
     image {
       width: 70rpx;
       height: 70rpx;
@@ -119,6 +148,7 @@
       min-height: 328rpx;
       box-shadow: 0px 1rpx 11rpx 2rpx rgba(98, 98, 98, 0.1);
       border-radius: 8rpx;
+      background-color: #FFFFFF;
 
       .item_head {
         display: flex;
@@ -129,14 +159,14 @@
           align-items: center;
 
           image {
-            width: 80rpx;
-            height: 80rpx;
+            width: 50rpx;
+            height: 50rpx;
             margin-top: -10rpx;
           }
         }
 
         .head_rt {
-          margin: 15rpx 20rpx 0 0;
+          margin: 15rpx 30rpx 0 0;
         }
       }
 
@@ -173,7 +203,7 @@
       .item_bottom {
         display: flex;
         justify-content: space-between;
-        padding: 0 20rpx;
+        padding: 0 30rpx;
         margin-top: 20rpx;
 
         text {

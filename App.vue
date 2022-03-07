@@ -2,7 +2,7 @@
 	export default {
     // 定义全局接口地址
     globalData:{
-      domain : "http://2510a815.cpolar.cn/api",
+      domain : "http://aff83e9.cpolar.cn/api",
     },
 		onLaunch: function() {
 			console.log('App Launch')
@@ -22,7 +22,7 @@
 			          console.log("code:" + open.code);
 			          //发起网络请求,获取openid
 			          wx.request({
-			            url: "http://2510a815.cpolar.cn/api/wxlogin",
+			            url: "http://aff83e9.cpolar.cn/api/wxlogin",
 			            data: {
 			              code: open.code,
 			            },

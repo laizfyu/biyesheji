@@ -3,34 +3,29 @@
     <view class="familyItem" v-for="(item,index) in familyList" :key="item.index">
       <view class="news_head">
         <view class="head_lf">
-          <image src="../../static/iconfont/family_item.png" mode=""></image> 
-          <view class="bkg"><text>{{item.familyId}}</text></view>
+          <image src="../../static/iconfont/family_item.png" mode=""></image>
+          <!-- <view class="bkg"><text>{{item.familyId}}</text></view> -->
         </view>
         <view class="head_rt" @click="getFamily(index)">
           <view>{{item.familyName}}</view>
           <image src="../../static/iconfont/arrow-right.png" mode=""></image>
         </view>
-        
+
       </view>
       <!-- <view class="news_center">
         <image src="../../static/img/pic_add.png" mode="aspectFit"></image>
         <view class="familyNews">
           <image src="../../static/iconfont/item.png" mode=""></image>
           <!-- <view>成员: {{number}}</view> -->
-        <!-- </view>
-      </view> --> 
+      <!-- </view>
+      </view> -->
       <!-- <view class="news_bottom">
         <view></view>
         
       </view> -->
     </view>
     <button type="default" class="buttom" @click="addFamily">组建家庭</button>
-    <u-modal
-      show-cancel-button 
-      v-model="show" 
-      title="请输入家庭名称" 
-      @confirm="setModal" 
-      confirm-color="#dea36c">
+    <u-modal show-cancel-button v-model="show" title="请输入家庭名称" @confirm="setModal" confirm-color="#dea36c">
       <view class="slot-content">
         <view class="ipt">
           <u-input v-model="value" type=text focus maxlength=10 />
@@ -48,6 +43,7 @@
       return {
         number: 8,
         userId: "",
+        userName: "",
         familyList: "",
         show: false,
         value: ""
@@ -56,8 +52,9 @@
     onShow() {
       const users = uni.getStorageSync("userInfo");
       this.userId = users.id;
+      this.userName = users.userName;
       console.log(this.userId)
-      this.getList() 
+      this.getList()
     },
     methods: {
       getList() {
@@ -67,7 +64,7 @@
           // data: {
           //   userId: this.userId
           // },
-          success:(res) => {
+          success: (res) => {
             // console.log(res)
             this.familyList = res.data.data;
             console.log(this.familyList);
@@ -80,7 +77,7 @@
           url: "../../pagesB/family_detail/family_detail?detail=" + encodeURIComponent(JSON.stringify(detail)),
         })
       },
-      
+
       // 新建家庭
       addFamily() {
         this.show = true;
@@ -98,10 +95,18 @@
             url: domain + "/addFamily",
             method: "POST",
             data: {
-              familyName: this.value
+              familyName: this.value,
+              userId: this.userId,
+              userName: this.userName
             },
-            success(addfm) {
-              console.log(addfm);
+            success:(addfm) => {
+              this.$refs.uToast.show({
+                title: addfm.data.msg,
+                type: 'warning',
+              })
+              setTimeout(() => {
+                this.getList()
+              }, 1000);
             }
           })
         }
@@ -119,6 +124,7 @@
     border-radius: 8rpx;
     margin: 27rpx auto 0;
     padding: 20rpx;
+
     .news_head {
       display: flex;
       justify-content: space-between;
@@ -127,10 +133,12 @@
       font-family: PingFang SC;
       font-weight: 500;
       color: #2C2C2C;
+
       .head_lf {
         display: flex;
         flex-direction: row;
         align-items: center;
+
         .bkg {
           // background-image: url(../../static/iconfont/tips@2x%20.png);
           // background-size: cover;
@@ -138,11 +146,13 @@
           // width: 120rpx;
           // height: 50rpx;
           line-height: 50rpx;
+
           text {
             margin-left: 10rpx;
           }
         }
       }
+
       .head_rt {
         display: flex;
         flex-direction: row;
@@ -150,26 +160,31 @@
         align-items: center;
         color: #d19a66;
       }
+
       image {
         width: 50rpx;
         height: 50rpx;
       }
     }
+
     .news_center {
       margin-top: 10rpx;
       display: flex;
       flex-direction: row;
       align-items: flex-start;
+
       image {
         width: 250rpx;
         height: 200rpx;
       }
+
       .familyNews {
         margin-left: 20rpx;
         color: #d19a66;
         display: flex;
         flex-direction: row;
         align-items: flex-end;
+
         image {
           width: 50rpx;
           height: 50rpx;
@@ -177,6 +192,7 @@
         }
       }
     }
+
     .news_bottom {
       display: flex;
       justify-content: space-between;
@@ -186,6 +202,7 @@
       font-size: 30rpx;
     }
   }
+
   .buttom {
     width: 640rpx;
     height: 84rpx;
@@ -195,6 +212,7 @@
     margin-left: -320rpx;
     background-color: #e19d3e !important;
   }
+
   .ipt {
     margin-left: 15rpx;
   }

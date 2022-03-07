@@ -16,7 +16,7 @@
     </view>
     <view class="shouna_center">
       
-      <view class="shouna_item" @click="getWupin" v-for="(item,index) in list" :key="item.index">
+     <!-- <view class="shouna_item" v-for="(item,index) in list" :key="item.index" @click="getWupin(index)">
         <view class="item_head">
           <view class="head_lf">
             <image src="../../static/iconfont/add_item.png" mode=""></image>
@@ -27,14 +27,14 @@
         <view class="item_center">
           <image src="../../static/img/pic_add.png" mode="aspectFit"></image>
           <!-- {{item.wupinImg}} -->
-          <view class="center_show"><text>描述:</text>{{item.wupinMiaoshu}}</view>
+        <!--  <view class="center_show"><text>描述:</text>{{item.wupinMiaoshu}}</view>
         </view>
         <view class="item_bottom">
           <view>{{item.wupinTime}}</view>
           <view><text>¥ {{item.wupinPic}}</text> <text>x {{item.wupinNum}}</text></view>
         </view>
       </view>
-      
+      -->
     </view>
   </view>
 </template>
@@ -61,27 +61,28 @@
       }
     },
     onShow() {
-    this.getList();
+    // this.getList();
     },
     methods: {
-      getList() {
-        const users = uni.getStorageSync("userInfo");
-        console.log("用户信息:")
-        console.log(users);
-        this.user_id = users.id;
-        wx.request({
-          url: domain + "/list",
-          method: "POST" ,
-          data: {
-            userId: this.user_id,
-          },
-          success:(res) => {
-            console.log(res)
-            this.list = res.data.data;
-            console.log(this.list)
-          }
-        })
-      },
+      // getList() {
+      //   const users = uni.getStorageSync("userInfo");
+      //   // console.log("用户信息:")
+      //   // console.log(users);
+      //   this.user_id = users.id;
+      //   console.log(this.user_id + "参数")
+      //   wx.request({
+      //     url: domain + "/list",
+      //     method: "POST" ,
+      //     data: {
+      //       userId: this.user_id,
+      //     },
+      //     success:(res) => {
+      //       console.log(res)
+      //       this.list = res.data.data;
+      //       console.log(this.list)
+      //     }
+      //   })
+      // },
       // 跳转到新增物品页
       getAddwupin() {
         uni.navigateTo({
@@ -89,9 +90,10 @@
         })
       },
       // 跳转到物品详情页
-      getWupin() {
+      getWupin(index) {
+        let boxId = this.list[index].id;
         uni.navigateTo({
-          url: "/pagesB/wupin_detail/wupin_detail"
+          url: "/pagesB/wupin_detail/wupin_detail?boxId=" + boxId
         })
       }
     }
@@ -121,7 +123,7 @@
   .addShouna {
     width: 682rpx;
     height: 84rpx;
-    background: #F5F5F5;
+    background: #f5f5f5;
     border-radius: 12rpx;
     display: flex;
     align-items: center;
@@ -152,6 +154,7 @@
      min-height: 328rpx;
      box-shadow: 0px 1rpx 11rpx 2rpx rgba(98, 98, 98, 0.1);
      border-radius: 8rpx;
+     background-color: #FFFFFF;
      .item_head {
        display: flex;
        justify-content: space-between;
@@ -159,13 +162,13 @@
          display: flex;
          align-items: center;
          image {
-           width: 80rpx;
-           height: 80rpx;
+           width: 50rpx;
+           height: 50rpx;
            margin-top: -10rpx;
          }
        }
        .head_rt {
-         margin: 15rpx 20rpx 0 0;
+         margin: 15rpx 30rpx 0 0;
        }
      }
      .item_center {
@@ -197,7 +200,7 @@
      .item_bottom {
        display: flex;
        justify-content: space-between;
-       padding: 0 20rpx;
+       padding: 0 30rpx;
        margin-top: 20rpx;
        text {
          margin-right: 10rpx;

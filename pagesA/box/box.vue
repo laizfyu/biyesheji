@@ -3,9 +3,9 @@
     <view class="box_item" v-for="(item,index) in boxList" :key="item.index" @click="getDetail(index)">
       <view class="box_head">
         <view class="head_lf">
-          <text>{{item.boxId}}</text>
+          <text>{{item.boxName}}</text>
         </view>
-        <view>{{item.boxName}}</view>
+        <view></view>
       </view>
       <view class="box_center">
         <view class="center_lf">
@@ -111,7 +111,7 @@
         background-image: url(../../static/iconfont/tips@2x%20.png);
         background-size: cover;
         background-repeat: no-repeat;
-        width: 120rpx;
+        width: 170rpx;
         height: 50rpx;
         line-height: 50rpx;
 
