@@ -1,24 +1,24 @@
 <template>
-  <view>
-    <view class="index_head">
-      <image src="/static/iconfont/laba.png" mode=""></image>
-      <view>合理收纳 , 整洁家庭</view>
-    </view>
-    <!-- 轮播图 -->
-    <view class="swiper">
-      <u-swiper :list="swiperList" :effect3d="true" height="350"></u-swiper>
-    </view>
-    <view style="height: 120rpx;">
-      <view class="addShouna" @click="getAddwupin">
-        <image src="../../static/iconfont/add_shouna.png" mode=""></image>
-        <text>新增收纳</text>
-      </view>
-    </view>
-    <view class="shouna_center">
-      <view class="echarts-wrap">
-          <mpvue-echarts :echarts="echarts" :onInit="onInit" canvasId="demo-canvas" />
-      </view>
-     <!-- <view class="shouna_item" v-for="(item,index) in list" :key="item.index" @click="getWupin(index)">
+	<view>
+		<view class="index_head">
+			<image src="/static/iconfont/laba.png" mode=""></image>
+			<view>合理收纳 , 整洁家庭</view>
+		</view>
+		<!-- 轮播图 -->
+		<view class="swiper">
+			<u-swiper :list="swiperList" :effect3d="true" height="350"></u-swiper>
+		</view>
+		<view style="height: 120rpx;">
+			<view class="addShouna" @click="getAddwupin">
+				<image src="../../static/iconfont/add_shouna.png" mode=""></image>
+				<text>新增收纳</text>
+			</view>
+		</view>
+		<view class="shouna_center">
+			<view class="charts-box">
+				<qiun-data-charts type="pie" :chartData="chartData" background="none" />
+			</view>
+			<!-- <view class="shouna_item" v-for="(item,index) in list" :key="item.index" @click="getWupin(index)">
         <view class="item_head">
           <view class="head_lf">
             <image src="../../static/iconfont/add_item.png" mode=""></image>
@@ -29,7 +29,7 @@
         <view class="item_center">
           <image src="../../static/img/pic_add.png" mode="aspectFit"></image>
           <!-- {{item.wupinImg}} -->
-        <!--  <view class="center_show"><text>描述:</text>{{item.wupinMiaoshu}}</view>
+			<!--  <view class="center_show"><text>描述:</text>{{item.wupinMiaoshu}}</view>
         </view>
         <view class="item_bottom">
           <view>{{item.wupinTime}}</view>
@@ -37,250 +37,229 @@
         </view>
       </view>
       -->
-    </view>
-  </view>
+		</view>
+	</view>
 </template>
 
 <script>
-  // import echarts from 'echarts'
-  // import mpvueEcharts from 'mpvue-echarts'
-  
-  const app = getApp()
-  const domain = app.globalData.domain
-  export default {
-    components: {
-        // mpvueEcharts
-    },
-    data() {
-      return {
-        list: "",
-        user_id: "",
-        swiperList: [
-          {
-            image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWd1qYUQi7mBPCEjLig615IFWCbz4oSXy62udv*d*xcbZFnY5P.u0rclIlyfliwavis!/b&bo=YgPOAWIDzgEBGT4!&rf=viewer_4"
-          },
-          {
-            image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWcnEc5b5yJXqOTvx3D158IZ7BoQl7fWWEZlMp*A8nH6uk0ewXLoX*ygUZ2miAnbXa8!/b&bo=6AMyAugDMgIBGT4!&rf=viewer_4"
-          },
-          {
-            image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWdDlraGz.al.0tAImKueI149FHCYzxEH.f0RvE2Gs4IsH0.vhLInQ7XlPqR2CrNv6E!/b&bo=PwPWAT8D1gEBGT4!&rf=viewer_4"
-          }
-        ],
-        // echarts,
-        // onInit: initChart
-      }
-    },
-    onShow() {
-      // this.init()
-    },
-    methods: {
-      
-      // initChart(canvas, width, height) {
-      //   let chart = null;
-      //   chart = echarts.init(canvas, null, {
-      //     width: width,
-      //     height: height
-      //   });
-      //   canvas.setChart(chart);
-       
-      //   var option = {
-      //     title: {
-      //       text: 'Referer of a Website',
-      //       subtext: 'Fake Data',
-      //       left: 'center'
-      //     },
-      //     tooltip: {
-      //       trigger: 'item'
-      //     },
-      //     legend: {
-      //       orient: 'vertical',
-      //       left: 'left'
-      //     },
-      //     series: [{
-      //       name: 'Access From',
-      //       type: 'pie',
-      //       radius: '50%',
-      //       data: [{
-      //           value: 1048,
-      //           name: 'Search Engine'
-      //         },
-      //         {
-      //           value: 735,
-      //           name: 'Direct'
-      //         },
-      //         {
-      //           value: 580,
-      //           name: 'Email'
-      //         },
-      //         {
-      //           value: 484,
-      //           name: 'Union Ads'
-      //         },
-      //         {
-      //           value: 300,
-      //           name: 'Video Ads'
-      //         }
-      //       ],
-      //       emphasis: {
-      //         itemStyle: {
-      //           shadowBlur: 10,
-      //           shadowOffsetX: 0,
-      //           shadowColor: 'rgba(0, 0, 0, 0.5)'
-      //         }
-      //       }
-      //     }]
-      //   }; // ECharts 配置项
-       
-      //   chart.setOption(option);
-       
-      //   return chart; // 返回 chart 后可以自动绑定触摸操作
-      // },
-      // getList() {
-      //   const users = uni.getStorageSync("userInfo");
-      //   // console.log("用户信息:")
-      //   // console.log(users);
-      //   this.user_id = users.id;
-      //   console.log(this.user_id + "参数")
-      //   wx.request({
-      //     url: domain + "/list",
-      //     method: "POST" ,
-      //     data: {
-      //       userId: this.user_id,
-      //     },
-      //     success:(res) => {
-      //       console.log(res)
-      //       this.list = res.data.data;
-      //       console.log(this.list)
-      //     }
-      //   })
-      // },
-      // 跳转到新增物品页
-      getAddwupin() {
-        uni.navigateTo({
-          url: "/pagesA/addwupin/addwupin"
-        })
-      },
-      // 跳转到物品详情页
-      getWupin(index) {
-        let boxId = this.list[index].id;
-        uni.navigateTo({
-          url: "/pagesB/wupin_detail/wupin_detail?boxId=" + boxId
-        })
-      }
-    }
-  }
+	// import echarts from 'echarts'
+	// import mpvueEcharts from 'mpvue-echarts'
+
+	const app = getApp()
+	const domain = app.globalData.domain
+	export default {
+		components: {
+			// mpvueEcharts
+		},
+		data() {
+			return {
+				list: "",
+				user_id: "",
+				swiperList: [{
+						image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWd1qYUQi7mBPCEjLig615IFWCbz4oSXy62udv*d*xcbZFnY5P.u0rclIlyfliwavis!/b&bo=YgPOAWIDzgEBGT4!&rf=viewer_4"
+					},
+					{
+						image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWcnEc5b5yJXqOTvx3D158IZ7BoQl7fWWEZlMp*A8nH6uk0ewXLoX*ygUZ2miAnbXa8!/b&bo=6AMyAugDMgIBGT4!&rf=viewer_4"
+					},
+					{
+						image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWdDlraGz.al.0tAImKueI149FHCYzxEH.f0RvE2Gs4IsH0.vhLInQ7XlPqR2CrNv6E!/b&bo=PwPWAT8D1gEBGT4!&rf=viewer_4"
+					}
+				],
+				chartData: {
+					series: [{
+						data: [{
+								value: 1048,
+								name: 'Search Engine'
+							},
+							{
+								value: 735,
+								name: 'Direct'
+							},
+							{
+								value: 580,
+								name: 'Email'
+							},
+							{
+								value: 484,
+								name: 'Union Ads'
+							},
+							{
+								value: 300,
+								name: 'Video Ads'
+							}
+						],
+					}],
+				},
+
+			}
+		},
+		onShow() {
+			// this.init()
+		},
+		methods: {
+			// getList() {
+			//   const users = uni.getStorageSync("userInfo");
+			//   // console.log("用户信息:")
+			//   // console.log(users);
+			//   this.user_id = users.id;
+			//   console.log(this.user_id + "参数")
+			//   wx.request({
+			//     url: domain + "/list",
+			//     method: "POST" ,
+			//     data: {
+			//       userId: this.user_id,
+			//     },
+			//     success:(res) => {
+			//       console.log(res)
+			//       this.list = res.data.data;
+			//       console.log(this.list)
+			//     }
+			//   })
+			// },
+			// 跳转到新增物品页
+			getAddwupin() {
+				uni.navigateTo({
+					url: "/pagesA/addwupin/addwupin"
+				})
+			},
+			// 跳转到物品详情页
+			getWupin(index) {
+				let boxId = this.list[index].id;
+				uni.navigateTo({
+					url: "/pagesB/wupin_detail/wupin_detail?boxId=" + boxId
+				})
+			}
+		}
+	}
 </script>
 
 <style lang="scss">
-  .echarts-wrap {
-    width: 100%;
-    height: 300px;
-  }
-  .index_head {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    image {
-      width: 50rpx;
-      height: 50rpx;
-      margin-left: 23rpx;
-    }
-    view {
-      margin-left: 10rpx;
-      font-size: 28rpx;
-      font-family: PingFang SC;
-      color: #282828;
-    }
-  }
-  .swiper {
-    margin-top: 10rpx;
-  }
-  .addShouna {
-    width: 682rpx;
-    height: 84rpx;
-    background: #f5f5f5;
-    border-radius: 12rpx;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    // position: fixed;
-    // top: 450rpx;
-    // left: 50%;
-    // margin-left: -341rpx;
-    margin: 50rpx auto;
-    image {
-      width: 34rpx;
-      height: 34rpx;
-    }
+	.echarts-wrap {
+		width: 100%;
+		height: 300px;
+	}
 
-    text {
-      margin-left: 11rpx;
-      font-size: 34rpx;
-      font-family: PingFang SC;
-      font-weight: 500;
-      color: #282828;
-    }
-  }
-  .shouna_center {
-    .shouna_item {
-     margin: 30rpx auto 0;
-     padding-bottom: 20rpx;
-     width: 688rpx;
-     min-height: 328rpx;
-     box-shadow: 0px 1rpx 11rpx 2rpx rgba(98, 98, 98, 0.1);
-     border-radius: 8rpx;
-     background-color: #FFFFFF;
-     .item_head {
-       display: flex;
-       justify-content: space-between;
-       .head_lf {
-         display: flex;
-         align-items: center;
-         image {
-           width: 50rpx;
-           height: 50rpx;
-           margin-top: -10rpx;
-         }
-       }
-       .head_rt {
-         margin: 15rpx 30rpx 0 0;
-       }
-     }
-     .item_center {
-       margin: 20rpx 20rpx 0 20rpx;
-       display: flex;
-       flex-direction: row;
-       image {
-         width: 170rpx;
-         height: 170rpx;
-       }
-       .center_show {
-         width: 480rpx;
-         height: 170rpx;
-         // padding-top: 10rpx;
-         margin-left: 12rpx;
-         font-size: 25rpx;
-         color: #8c8c8c;
-         display: -webkit-box;
-         -webkit-box-orient: vertical;
-         -webkit-line-clamp: 4;
-         overflow: hidden;
-         text {
-           font-size: 30rpx;
-           font-weight: 500;
-           color: #000000;
-         }
-       }
-     }
-     .item_bottom {
-       display: flex;
-       justify-content: space-between;
-       padding: 0 30rpx;
-       margin-top: 20rpx;
-       text {
-         margin-right: 10rpx;
-       }
-     }
-    }
-  }
+	.index_head {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+
+		image {
+			width: 50rpx;
+			height: 50rpx;
+			margin-left: 23rpx;
+		}
+
+		view {
+			margin-left: 10rpx;
+			font-size: 28rpx;
+			font-family: PingFang SC;
+			color: #282828;
+		}
+	}
+
+	.swiper {
+		margin-top: 10rpx;
+	}
+
+	.addShouna {
+		width: 682rpx;
+		height: 84rpx;
+		background: #f5f5f5;
+		border-radius: 12rpx;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		// position: fixed;
+		// top: 450rpx;
+		// left: 50%;
+		// margin-left: -341rpx;
+		margin: 50rpx auto;
+
+		image {
+			width: 34rpx;
+			height: 34rpx;
+		}
+
+		text {
+			margin-left: 11rpx;
+			font-size: 34rpx;
+			font-family: PingFang SC;
+			font-weight: 500;
+			color: #282828;
+		}
+	}
+
+	.shouna_center {
+		.shouna_item {
+			margin: 30rpx auto 0;
+			padding-bottom: 20rpx;
+			width: 688rpx;
+			min-height: 328rpx;
+			box-shadow: 0px 1rpx 11rpx 2rpx rgba(98, 98, 98, 0.1);
+			border-radius: 8rpx;
+			background-color: #FFFFFF;
+
+			.item_head {
+				display: flex;
+				justify-content: space-between;
+
+				.head_lf {
+					display: flex;
+					align-items: center;
+
+					image {
+						width: 50rpx;
+						height: 50rpx;
+						margin-top: -10rpx;
+					}
+				}
+
+				.head_rt {
+					margin: 15rpx 30rpx 0 0;
+				}
+			}
+
+			.item_center {
+				margin: 20rpx 20rpx 0 20rpx;
+				display: flex;
+				flex-direction: row;
+
+				image {
+					width: 170rpx;
+					height: 170rpx;
+				}
+
+				.center_show {
+					width: 480rpx;
+					height: 170rpx;
+					// padding-top: 10rpx;
+					margin-left: 12rpx;
+					font-size: 25rpx;
+					color: #8c8c8c;
+					display: -webkit-box;
+					-webkit-box-orient: vertical;
+					-webkit-line-clamp: 4;
+					overflow: hidden;
+
+					text {
+						font-size: 30rpx;
+						font-weight: 500;
+						color: #000000;
+					}
+				}
+			}
+
+			.item_bottom {
+				display: flex;
+				justify-content: space-between;
+				padding: 0 30rpx;
+				margin-top: 20rpx;
+
+				text {
+					margin-right: 10rpx;
+				}
+			}
+		}
+	}
 </style>
