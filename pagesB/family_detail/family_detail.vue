@@ -78,18 +78,20 @@
     data() {
       return {
         nameShow: false,
-        familyName: "小明的一家",
+        familyName: "",
         familyDetail: "",
         familyId: "",
         show: false,
         phone: "",
-        familyUser: ""
+        familyUser: "",
+        id: ""
       }
     },
     onLoad(options) {
       this.familyDetail = JSON.parse(decodeURIComponent(options.detail));
       this.familyName = this.familyDetail.familyName;
       this.familyId = this.familyDetail.familyId;
+      this.id = this.familyDetail.id;
     },
     onShow() {
       this.getFamilyUser()

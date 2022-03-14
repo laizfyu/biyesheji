@@ -57,9 +57,35 @@
                         duration: "1500",
                       });
                       setTimeout(() => {
-                        wx.reLaunch({
-                          url: "/pagesA/xinxi/phone/phone",
-                        });
+                        wx.login({
+                          success: (open) => {
+                            console.log("发送请求");
+                            console.log(open);
+                            console.log("code:" + open.code);
+                            //发起网络请求,获取openid
+                            wx.request({
+                              url: domain + "/wxlogin",
+                              data: {
+                                code: open.code,
+                              },
+                              method: "POST",
+                              success: (r) => {
+                                // console.log("用户的openid:" + r.data.data.openid);
+                                console.log(r);
+                               if(r.data.data.userPhone) {
+                                  wx.setStorageSync("userInfo", r.data.data);
+                                  wx.reLaunch({
+                                    url: "/pages/index/index"
+                                  })
+                               } else {
+                                 wx.reLaunch({
+                                   url: "/pagesA/xinxi/phone/phone"
+                                 })
+                               }
+                              }
+                            })
+                          }
+                        })
                       }, 1000);
                     },
                     fail: (error) => {

@@ -1,5 +1,20 @@
 <template>
   <view>
+    <view class="wupin_name">
+      <text>物品名称:</text>
+      <view @click="nameShow" class="wupinName_rt">
+        <text>{{wupinName}}</text>
+        <image src="/static/iconfont/arrow-right.png" mode=""></image>
+      </view>
+    </view>
+    <u-modal show-cancel-button v-model="show" title="请输入物品名称" @confirm="setModal" confirm-color="#dea36c">
+      <view class="slot-content">
+        <view class="ipt">
+          <u-input v-model="value" type=text focus maxlength=10 />
+        </view>
+      </view>
+    </u-modal>
+    
     <view class="wupin">
       <view class="remark-box">
         <view class="title">描述:</view>
@@ -19,8 +34,8 @@
       <view class="wupin_bottom">
         <image :src="src" mode="" @click="getTu()"></image>
         <view class="bottom_rt">
-          <view class="rt">价格¥<input type="text" :value="pic" /></view>
-          <view class="rt">数量x<input type="text" :value="number" style="margin-left: 8rpx;" /></view>
+          <view class="rt">价格¥<input type="text" v-model="pic" /></view>
+          <view class="rt">数量x<input type="text" v-model="number" style="margin-left: 8rpx;" /></view>
         </view>
       </view>
       <view style="
@@ -33,7 +48,7 @@
       <view class="wupin_tips">
           <view class="tips_top">
             <view>便签</view>
-            <image src="../../static/iconfont/arrow-right.png" mode="" @click="getTips"></image>
+            <image src="/static/iconfont/arrow-right.png" mode="" @click="getTips"></image>
           </view>
           <view style="
             background-color: #d19a66; 
@@ -73,10 +88,10 @@
     
     <!-- 选择物品存放的盒子 -->
     <view class="wupin_box" @click="getBox">
-      <text>选择存放盒子</text>
+      <text>选择存放收纳盒</text>
       <view style="display: flex; align-items: center;">
-        <text>{{wupinTips}}</text>
-        <image src="../../static/iconfont/arrow-right.png" mode=""></image>
+        <text>{{boxName}}</text>
+        <image src="/static/iconfont/arrow-right.png" mode=""></image>
       </view>
     </view>
     <u-popup 
@@ -93,32 +108,31 @@
           v-model="radio" 
           active-color="#d19a66" 
           wrap="true" 
-          width="100%" 
-          @change="setRadio">
-          <u-radio name="0">
+          width="100%">
+          <u-radio v-for="(box,index) in boxList" :key="box.index" :name="box.boxName" @change="setRadio(index)">
             <view class="box_item">
               <view class="item_head">
-                <text>BX0001</text>
-                <image src="../../static/iconfont/xiugai@2x.png" mode="" @click="getBoxdetail"></image>
+                <text>{{box.boxName}}</text>
+                <image src="/static/iconfont/xiugai@2x.png" mode="" @click="getBoxdetail(index)"></image>
               </view>
-              <view class="item_center">
+              <!-- <view class="item_center">
                 <text>盒子名称</text>
                 <text>盒子类型</text>
-              </view>
+              </view> -->
             </view>
           </u-radio>
-          <u-radio name="1">
+          <!-- <u-radio name="1">
             <view class="box_item">
               <view class="item_head">
-                <text>BX0002</text>
+                <text>盒子名称</text>
                 <image src="../../static/iconfont/xiugai@2x.png" mode="" @click="getBoxdetail"></image>
-              </view>
-              <view class="item_center">
+              </view> -->
+              <!-- <view class="item_center">
                 <text>盒子名称</text>
                 <text>盒子类型</text>
-              </view>
-            </view>
-          </u-radio>
+              </view> -->
+           <!-- </view>
+          </u-radio> -->
         </u-radio-group>
       </scroll-view>
       <view class="addBox">
@@ -130,8 +144,8 @@
     <view class="wupin_box" @click="getTime">
       <text>选择过期时间</text>
       <view style="display: flex; align-items: center;">
-        <text>{{time}}</text>
-        <image src="../../static/iconfont/arrow-right.png" mode=""></image>
+        <text>{{endTime}}</text>
+        <image src="/static/iconfont/arrow-right.png" mode=""></image>
       </view>
     </view>
     <u-calendar 
@@ -149,8 +163,8 @@
     <view class="wupin_box" @click="starFamily">
       <text>选择所在家庭</text>
       <view style="display: flex; align-items: center;">
-        <text>{{wupinFamily}}</text>
-        <image src="../../static/iconfont/arrow-right.png" mode=""></image>
+        <text>{{familyName}}</text>
+        <image src="/static/iconfont/arrow-right.png" mode=""></image>
       </view>
     </view>
     <u-popup 
@@ -172,63 +186,72 @@
         v-model="radio" 
         active-color="#d19a66" 
         wrap="true" 
-        width="100%" 
-        @change="setFyname">
-          <u-radio name="0">
+        width="100%">
+          <u-radio v-for="(family,index) in familyList" :key="family.index" :name="family.familyName" @change="setFyname(index)">
             <view class="box_item">
               <view class="item_head">
-                <text>FY0001</text>
-                <image src="../../static/iconfont/xiugai@2x.png" mode=""></image>
-              </view>
-              <view class="item_center">
-                <text></text>
-                <text>家庭名称</text>
+                <text>{{family.familyName}}</text>
+                <image src="/static/iconfont/xiugai@2x.png" mode=""></image>
               </view>
             </view>
           </u-radio>
-          <u-radio name="1">
+         <!-- <u-radio name="1">
             <view class="box_item">
               <view class="item_head">
-                <text>FY0002</text>
+                <text>家庭名称</text>
                 <image src="../../static/iconfont/xiugai@2x.png" mode="" @click="getBoxdetail"></image>
-              </view>
-              <view class="item_center">
+              </view> -->
+              <!-- <view class="item_center">
                 <text></text>
                 <text>家庭名称</text>
-              </view>
-            </view>
-          </u-radio>
+              </view> -->
+            <!-- </view>
+          </u-radio> -->
         </u-radio-group>
       </scroll-view>
-      <view class="addBox">
+      <!-- <view class="addBox">
         <image src="../../static/iconfont/add_shouna.png" mode=""></image>
-        <text>新增收纳盒子</text>
-      </view>
+        <text>新增家庭</text>
+      </view> -->
     </u-popup>
-    
+    <!-- 操作提示 -->
+    <u-toast ref="uToast" />
     <!-- 底部保存按钮 -->
-    <button type="default" class="buttom">保存</button>
+    <button type="default" class="buttom" @click="saveWupin">保存</button>
   </view>
 </template>
 
 <script>
+  const app = getApp()
+  const domain = app.globalData.domain
   export default {
     data() {
       return {
         remark: "", //描述信息
         pic: "", //价格
         number: "", //数量
-        src: "../../static/img/pic_add.png",
-        wupinTips: "", //盒子标签
-        wupinFamily: "", //家庭标签
+        src: "/static/img/pic_add.png",
+        boxTips: "", //盒子标签
+        boxName: "", //盒子名字
+        familyTips: "", //家庭标签
+        familyName: "", //家庭名字
         timeBox: false, //是否显示过期时间选择
         wupinBox: false, //是否显示盒子选择
         mode: 'date',
-        time: "", //过期时间
+        startTime: "", //存储时间
+        endTime: "", //过期时间
         radio: "",
-        tipsName: "选择类型", //盒子类型
-        tipsShow: false, //是否显示标签选择
+        tipsName: "", //盒子类型
+        tipsShow: false, //是否显示分类选择
         familyShow: false, //是否显示家庭选择
+        user_id: "", //用户openid
+        userId: "", //用户id
+        userName: "", //用户名
+        boxList: "", //盒子列表
+        familyList: "", //家庭列表
+        show: false, //是否显示物品名称填写框
+        wupinName: "", //物品名称
+        value: "",
         tipsList: [
           {tipsName: "衣服"},
           {tipsName: "裤子"},
@@ -255,24 +278,76 @@
         ]
       }
     },
+    onShow() {
+      const users = uni.getStorageSync("userInfo");
+      console.log("用户信息:")
+      console.log(users);
+      this.user_id = users.userId;
+      this.userId = users.id;
+      this.userName = users.userName;
+      this.init();
+    },
     methods: {
+      init() {
+        let date = new Date();
+        let y = date.getFullYear(); //获取当前年份(4位)
+        let m = date.getMonth() + 1; //获取当前月份(2位)
+        let d = date.getDate();
+        m = m < 10 ? "0" + m : m;
+        d = d < 10 ? "0" + d : d;
+        date = y + "-" + m + "-" + d;
+        this.startTime = date;
+        console.log(this.startTime);
+      },
+      // 填写物品名称
+      nameShow() {
+        this.show = true
+      },
+      setModal() {
+        if (this.value.length == 0) {
+          console.log("不能为空")
+          this.$refs.uToast.show({
+            title: '家庭名称不能为空',
+            type: 'warning',
+          })
+        } else { 
+          this.wupinName = this.value;
+          this.show = false;
+        }
+      },
       // 选择物品图片
       getTu() {
         uni.chooseImage({
           count: 1,
           success: (res) => {
-            this.src = res.tempFilePaths;
+            this.src = res.tempFilePaths[0];
             console.log(JSON.stringify(res.tempFilePaths));
+            console.log(this.src)
           }
         })
       },
       // 选择盒子
       getBox() {
         this.wupinBox = true
+        wx.request({
+          url: domain + "/boxList",
+          method: "POST" ,
+          data: {
+            userId: this.user_id,
+          },
+          success:(res) => {
+            // console.log(res)
+            this.boxList = res.data.data;
+            console.log(this.boxList)
+            console.log(this.user_id)
+          }
+        })
       },
-      setRadio() {
-        this.wupinBox = false
-        this.wupinTips = "BX0001"
+      setRadio(index) {
+        console.log(index);
+        this.boxName = this.boxList[index].boxName;
+        this.boxTips = this.boxList[index].boxId;
+        this.wupinBox = false;
       },
       // 选择过期时间
       getTime() {
@@ -280,7 +355,7 @@
       },
       change(e) {
         console.log(e)
-        this.time = e.result
+        this.endTime = e.result
       },
       // 选择物品类别
       getTips() {
@@ -294,15 +369,64 @@
       // 选择家庭
       starFamily() {
         this.familyShow = true
+        wx.request({
+          url: domain + "/familyList?userId=" + this.userId,
+          method: "GET",
+          // data: {
+          //   userId: this.userId
+          // },
+          success: (fmy) => {
+            console.log(fmy)  
+            this.familyList = fmy.data.data;
+          }
+        })
       },
-      setFyname() {
+      setFyname(index) {
         this.familyShow = false
-        this.wupinFamily = 'FY0001'
+        this.familyName = this.familyList[index].familyName;
+        this.familyTips = this.familyList[index].familyId;
+        console.log(this.familyName)
       },
       // 跳转到盒子详情页
-      getBoxdetail() {
+      getBoxdetail(index) {
+        let detail = this.boxList[index]
         uni.navigateTo({
-          url: "../../pagesB/box_detail/box_detail"
+          url: "../../pagesB/box_detail/box_detail?detail=" + encodeURIComponent(JSON.stringify(detail)),
+        })
+      },
+      saveWupin() {
+        wx.request({
+          url: domain + "/addWupin",
+          method: "POST",
+          data: {
+            // wupinId: this.boxTips,
+            wupinName: this.wupinName,
+            wupinType: this.tipsName,
+            wupinTime: this.startTime,
+            wupinGuoqi: this.endTime,
+            wupinImg: this.src,
+            wupinMiaoshu: this.remark,
+            userId: this.userId,
+            userName: this.userName,
+            boxId: this.boxTips,
+            boxName: this.boxName,
+            familyId: this.familyTips,
+            familyName: this.familyName,
+            wupinPic: this.pic,
+            wupinNum: this.number
+          },
+          success:(ars) => {
+            console.log(ars);
+            this.$refs.uToast.show({
+              title: ars.data.msg,
+              type: 'warning',
+            })
+            setTimeout(() => {
+              uni.reLaunch({
+                url: "/pages/query/query"
+              })
+            }, 1000); 
+          }
         })
       }
     }
@@ -310,6 +434,29 @@
 </script>
 
 <style lang="scss">
+  .wupin_name {
+    width: 688rpx;
+    height: 80rpx;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 32rpx;
+    box-shadow: 0px 1rpx 11rpx 2rpx rgba(98, 98, 98, 0.1);
+    margin: 20rpx auto;
+    .wupinName_rt {
+      display: flex;
+      align-items: center;
+    }
+    text {
+      margin-left: 20rpx;
+    }
+    
+    image {
+      width: 50rpx;
+      height: 50rpx;
+      margin-right: 20rpx;
+    }
+  }
   .wupin {
     width: 688rpx;
     min-height: 300rpx;

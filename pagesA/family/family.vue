@@ -32,6 +32,8 @@
         </view>
       </view>
     </u-modal>
+    <!-- 操作提示 -->
+    <u-toast ref="uToast" />
   </view>
 </template>
 
@@ -41,19 +43,22 @@
   export default {
     data() {
       return {
-        number: 8,
-        userId: "",
-        userName: "",
-        familyList: "",
-        show: false,
-        value: ""
+        userId: "", //用户id
+        userName: "", //用户名
+        familyList: "", //家庭数据
+        show: false, //是否显示家庭添加框
+        value: "", //添加家庭名
+        phone: "", //用户手机号
+        familyId: "", //家庭id
+        familyName: "", //家庭名
       }
     },
     onShow() {
       const users = uni.getStorageSync("userInfo");
       this.userId = users.id;
       this.userName = users.userName;
-      console.log(this.userId)
+      this.phone = users.userPhone;
+      // console.log(this.userId)
       this.getList()
     },
     methods: {
@@ -66,8 +71,12 @@
           // },
           success: (res) => {
             // console.log(res)
-            this.familyList = res.data.data;
-            console.log(this.familyList);
+            if(res.data.data.length == 0) {
+              this.addFamily()
+            } else {  
+              this.familyList = res.data.data;
+              console.log(this.familyList)
+            }
           }
         })
       },
@@ -79,13 +88,12 @@
       },
 
       // 新建家庭
-      addFamily() {
+      addFamily() { //弹出家庭名字输入框
         this.show = true;
         console.log(this.show)
       },
       setModal() {
-        if (this.value.length == 0) {
-          console.log("不能为空")
+        if (this.value.length == 0) { //判断家庭名字是否为空
           this.$refs.uToast.show({
             title: '家庭名称不能为空',
             type: 'warning',
@@ -100,17 +108,32 @@
               userName: this.userName
             },
             success:(addfm) => {
-              this.$refs.uToast.show({
-                title: addfm.data.msg,
-                type: 'warning',
+              console.log(addfm);
+                }
               })
-              setTimeout(() => {
-                this.getList()
-              }, 1000);
             }
-          })
-        }
+            this.getList()
+            console.log(this.familyId + "1")
+            setTimeout(() => {
+              wx.request({
+                url: domain + "/addFamilyUser",
+                data: {
+                  userPhone: this.phone,
+                  familyId: this.familyId,
+                  familyName: this.familyName
+                },
+                method: "POST",
+                success:(list) => {
+                  console.log(list)
+                  console.log(this.familyId + ":id") 
+                  console.log(this.familyName + ":name")
+                }
+              })
+            }, 2000);
+           
+        
       },
+      
     }
   }
 </script>

@@ -1,19 +1,21 @@
 <template>
   <view>
-    <view class="box_item" v-for="(item,index) in boxList" :key="item.index" @click="getDetail(index)">
-      <view class="box_head">
-        <view class="head_lf">
-          <text>{{item.boxName}}</text>
+    <view class="box_list">
+      <view class="box_item" v-for="(item,index) in boxList" :key="item.index" @click="getDetail(index)">
+        <view class="box_head">
+          <view class="head_lf">
+            <text>{{item.boxName}}</text>
+          </view>
+          <view></view>
         </view>
-        <view></view>
-      </view>
-      <view class="box_center">
-        <view class="center_lf">
-          <image :src="item.boxImg" mode="aspectFit"></image>
-        </view>
-        <view class="center_rt">
-          <text>盒子位置:</text>
-          {{item.boxMiaoshu}}
+        <view class="box_center">
+          <view class="center_lf">
+            <image :src="item.boxImg" mode="aspectFit"></image>
+          </view>
+          <view class="center_rt">
+            <text>盒子位置:</text>
+            {{item.boxMiaoshu}}
+          </view>
         </view>
       </view>
     </view>
@@ -92,6 +94,9 @@
 </script>
 
 <style lang="scss">
+  .box_list {
+    margin-bottom: 110rpx;
+  }
   .box_item {
     width: 696rpx;
     height: 256rpx;
@@ -144,6 +149,7 @@
           font-size: 30rpx;
           font-weight: 500;
           margin-right: 10rpx;
+          // width: 100rpx;
         }
       }
     }

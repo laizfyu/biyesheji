@@ -9,5 +9,9 @@
         "UI",
         "UI框架",
         "uni-app"
-    ]
+    ],
+    "dependencies": {
+        "echarts": "^5.3.1",
+        "mpvue-echarts": "^0.3.2"
+    }
 }

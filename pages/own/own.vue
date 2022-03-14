@@ -92,7 +92,7 @@
       },
       getPhone() {
         if (this.users){
-          
+        
         } else {
           uni.navigateTo({
             url: "/pagesA/xinxi/phone/phone"

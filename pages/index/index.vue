@@ -15,7 +15,9 @@
       </view>
     </view>
     <view class="shouna_center">
-      
+      <view class="echarts-wrap">
+          <mpvue-echarts :echarts="echarts" :onInit="onInit" canvasId="demo-canvas" />
+      </view>
      <!-- <view class="shouna_item" v-for="(item,index) in list" :key="item.index" @click="getWupin(index)">
         <view class="item_head">
           <view class="head_lf">
@@ -40,9 +42,15 @@
 </template>
 
 <script>
+  // import echarts from 'echarts'
+  // import mpvueEcharts from 'mpvue-echarts'
+  
   const app = getApp()
   const domain = app.globalData.domain
   export default {
+    components: {
+        // mpvueEcharts
+    },
     data() {
       return {
         list: "",
@@ -57,13 +65,76 @@
           {
             image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWdDlraGz.al.0tAImKueI149FHCYzxEH.f0RvE2Gs4IsH0.vhLInQ7XlPqR2CrNv6E!/b&bo=PwPWAT8D1gEBGT4!&rf=viewer_4"
           }
-        ]
+        ],
+        // echarts,
+        // onInit: initChart
       }
     },
     onShow() {
-    // this.getList();
+      // this.init()
     },
     methods: {
+      
+      // initChart(canvas, width, height) {
+      //   let chart = null;
+      //   chart = echarts.init(canvas, null, {
+      //     width: width,
+      //     height: height
+      //   });
+      //   canvas.setChart(chart);
+       
+      //   var option = {
+      //     title: {
+      //       text: 'Referer of a Website',
+      //       subtext: 'Fake Data',
+      //       left: 'center'
+      //     },
+      //     tooltip: {
+      //       trigger: 'item'
+      //     },
+      //     legend: {
+      //       orient: 'vertical',
+      //       left: 'left'
+      //     },
+      //     series: [{
+      //       name: 'Access From',
+      //       type: 'pie',
+      //       radius: '50%',
+      //       data: [{
+      //           value: 1048,
+      //           name: 'Search Engine'
+      //         },
+      //         {
+      //           value: 735,
+      //           name: 'Direct'
+      //         },
+      //         {
+      //           value: 580,
+      //           name: 'Email'
+      //         },
+      //         {
+      //           value: 484,
+      //           name: 'Union Ads'
+      //         },
+      //         {
+      //           value: 300,
+      //           name: 'Video Ads'
+      //         }
+      //       ],
+      //       emphasis: {
+      //         itemStyle: {
+      //           shadowBlur: 10,
+      //           shadowOffsetX: 0,
+      //           shadowColor: 'rgba(0, 0, 0, 0.5)'
+      //         }
+      //       }
+      //     }]
+      //   }; // ECharts 配置项
+       
+      //   chart.setOption(option);
+       
+      //   return chart; // 返回 chart 后可以自动绑定触摸操作
+      // },
       // getList() {
       //   const users = uni.getStorageSync("userInfo");
       //   // console.log("用户信息:")
@@ -101,6 +172,10 @@
 </script>
 
 <style lang="scss">
+  .echarts-wrap {
+    width: 100%;
+    height: 300px;
+  }
   .index_head {
     display: flex;
     flex-direction: row;

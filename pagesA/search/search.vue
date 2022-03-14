@@ -23,7 +23,7 @@
         <text class="head_rt">{{item.wupinName}}</text>
       </view>
       <view class="item_center">
-        <image src="/static/img/pic_add.png" mode="aspectFit"></image>
+        <image :src="item.wupinImg" mode="aspectFit"></image>
         <!-- {{item.wupinImg}} -->
         <view class="center_show"><text>描述:</text>{{item.wupinMiaoshu}}</view>
       </view>
