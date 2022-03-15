@@ -16,7 +16,7 @@
 		</view>
 		<view class="shouna_center">
 			<view class="charts-box">
-				<qiun-data-charts type="pie" :chartData="chartData" background="none" />
+				<qiun-data-charts type="pie" :chartData="chartData" :opts="opts" background="none" />
 			</view>
 			<!-- <view class="shouna_item" v-for="(item,index) in list" :key="item.index" @click="getWupin(index)">
         <view class="item_head">
@@ -92,7 +92,14 @@
 						],
 					}],
 				},
-
+				// uchart的配置项
+				opts: {
+					"extra": {
+						"pie": {
+							"linearType": "custom"
+						}
+					}
+				}
 			}
 		},
 		onShow() {

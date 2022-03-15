@@ -128,7 +128,7 @@ const cfu = {
 				"labelWidth": 15,
 				"border": true,
 				"borderWidth": 3,
-				"borderColor": "#FFFFFF"
+				"borderColor": "#FFFFFF",
 			},
 		}
 	},
