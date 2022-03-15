@@ -68,25 +68,26 @@
 				// 修改此处数据即可
 				chartData: {
 					series: [{
-						data: [{
+						data: [
+							{
 								value: 1048,
-								name: 'Search Engine'
+								name: '鞋子'
 							},
 							{
 								value: 735,
-								name: 'Direct'
+								name: '钱包'
 							},
 							{
 								value: 580,
-								name: 'Email'
+								name: '衣服'
 							},
 							{
 								value: 484,
-								name: 'Union Ads'
+								name: '裤子'
 							},
 							{
 								value: 300,
-								name: 'Video Ads'
+								name: '袜子'
 							}
 						],
 					}],
