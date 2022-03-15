@@ -65,6 +65,7 @@
 						image: "http://m.qpic.cn/psc?/V14crKpG3H0KQu/45NBuzDIW489QBoVep5mcX1w9Fr68F9o.*hzEksAAWdDlraGz.al.0tAImKueI149FHCYzxEH.f0RvE2Gs4IsH0.vhLInQ7XlPqR2CrNv6E!/b&bo=PwPWAT8D1gEBGT4!&rf=viewer_4"
 					}
 				],
+				// 修改此处数据即可
 				chartData: {
 					series: [{
 						data: [{
